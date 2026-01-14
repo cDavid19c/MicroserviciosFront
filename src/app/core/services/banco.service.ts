@@ -1,11 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, map, catchError, of, throwError, switchMap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 /**
  * BancoService - Cliente REST para el API del banco
- * Replica la lógica de Django's BancoRest.py
- * Base URL: http://mibanca.runasp.net
+ * 
+ * ⚠️ NOTA: En producción (HTTPS) se usa proxy CORS público para evitar Mixed Content.
+ * Esto NO es seguro para producción real. La solución correcta es un proxy propio.
  */
 @Injectable({
     providedIn: 'root'
@@ -13,7 +15,10 @@ import { Observable, forkJoin, map, catchError, of, throwError, switchMap } from
 export class BancoService {
     private http = inject(HttpClient);
 
-    private readonly BANCO_URL = 'http://mibanca.runasp.net';
+    // En dev: HTTP directo | En prod: proxy CORS público
+    private readonly BANCO_URL = environment.production
+        ? 'https://corsproxy.io/?http://mibanca.runasp.net'
+        : 'http://mibanca.runasp.net';
 
     // Cuentas fijas del sistema 
     readonly CUENTA_CLIENTE = '1727115820';  // Cuenta que usan todos los clientes
