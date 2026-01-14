@@ -1,0 +1,122 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm rounded-4">
+        <div class="card-body p-4">
+          <div class="text-center mb-4">
+            <div class="avatar-circle mx-auto mb-3">
+              <i class="bi bi-person-circle"></i>
+            </div>
+            <h3 class="fw-bold text-hotel">Mi Perfil</h3>
+            <p class="text-muted">Gestiona tu información personal</p>
+          </div>
+
+          @if (loading) {
+            <app-loading message="Cargando datos..."></app-loading>
+          } @else {
+            @if (successMessage) {
+              <div class="alert alert-success">
+                <i class="bi bi-check-circle me-1"></i> {{ successMessage }}
+              </div>
+            }
+
+            @if (errorMessage) {
+              <div class="alert alert-danger">
+                <i class="bi bi-exclamation-circle me-1"></i> {{ errorMessage }}
+              </div>
+            }
+
+            <form [formGroup]="perfilForm" (ngSubmit)="onSubmit()">
+              <div class="row g-3">
+                <!-- Nombre -->
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Nombre</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="nombre"
+                    (input)="onNameInput($event, 'nombre')"
+                    [class.is-invalid]="f['nombre'].touched && f['nombre'].invalid">
+                  @if (f['nombre'].touched && f['nombre'].errors) {
+                    <div class="invalid-feedback">
+                      @if (f['nombre'].errors['required']) {
+                        El nombre es obligatorio.
+                      } @else if (f['nombre'].errors['pattern']) {
+                        Solo se permiten letras.
+                      }
+                    </div>
+                  }
+                </div>
+
+                <!-- Apellido -->
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">Apellido</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="apellido"
+                    (input)="onNameInput($event, 'apellido')"
+                    [class.is-invalid]="f['apellido'].touched && f['apellido'].invalid">
+                  @if (f['apellido'].touched && f['apellido'].errors) {
+                    <div class="invalid-feedback">
+                      @if (f['apellido'].errors['required']) {
+                        El apellido es obligatorio.
+                      } @else if (f['apellido'].errors['pattern']) {
+                        Solo se permiten letras.
+                      }
+                    </div>
+                  }
+                </div>
+
+                <!-- Correo (solo lectura) -->
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">
+                    Correo electrónico
+                    <i class="bi bi-lock-fill text-muted small" title="No editable"></i>
+                  </label>
+                  <input type="email" class="form-control bg-light" formControlName="correo">
+                  <small class="text-muted">El correo no se puede modificar.</small>
+                </div>
+
+                <!-- Tipo Documento (solo lectura) -->
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">
+                    Tipo de documento
+                    <i class="bi bi-lock-fill text-muted small" title="No editable"></i>
+                  </label>
+                  <input type="text" class="form-control bg-light" formControlName="tipoDocumento">
+                </div>
+
+                <!-- Documento (solo lectura) -->
+                <div class="col-md-6">
+                  <label class="form-label fw-semibold">
+                    Número de documento
+                    <i class="bi bi-lock-fill text-muted small" title="No editable"></i>
+                  </label>
+                  <input type="text" class="form-control bg-light" formControlName="documento">
+                </div>
+              </div>
+
+              <hr class="my-4">
+
+              <div class="d-flex justify-content-end gap-2">
+                <button
+                  type="submit"
+                  class="btn btn-hotel"
+                  [disabled]="saving || perfilForm.invalid">
+                  @if (saving) {
+                    <span class="spinner-border spinner-border-sm me-1"></span>
+                    Guardando...
+                  } @else {
+                    <i class="bi bi-check-lg me-1"></i> Guardar Cambios
+                  }
+                </button>
+              </div>
+            </form>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

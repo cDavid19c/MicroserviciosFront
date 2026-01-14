@@ -1,0 +1,148 @@
+<div class="container py-4">
+  <div class="mb-4">
+    <h2 class="fw-bold text-hotel mb-1">
+      <i class="bi bi-credit-card me-2"></i>
+      Mis Pagos
+    </h2>
+    <p class="text-muted mb-0">Historial de pagos y facturas</p>
+  </div>
+
+  <!-- Loading -->
+  @if (loading) {
+  <app-loading message="Cargando pagos..." [fullscreen]="true"></app-loading>
+  }
+
+  <!-- Error -->
+  @if (error) {
+  <app-error title="Error al cargar" message="No se pudieron cargar tus pagos." (onRetry)="loadPagos()">
+  </app-error>
+  }
+
+  <!-- Empty -->
+  @if (!loading && !error && pagos.length === 0) {
+  <app-empty icon="bi-credit-card-2-back" title="No tienes pagos" message="Aún no has realizado ningún pago.">
+  </app-empty>
+  }
+
+  <!-- Lista de pagos -->
+  @if (!loading && !error && pagos.length > 0) {
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th># Pago</th>
+          <th>Fecha</th>
+          <th>Monto</th>
+          <th>Estado</th>
+          <th>Factura</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (pago of pagos; track pago.id) {
+        <tr>
+          <td>
+            <strong>#{{ pago.id }}</strong>
+          </td>
+          <td>{{ pago.fecha }}</td>
+          <td>
+            <span class="fw-bold text-hotel">${{ pago.monto | number:'1.2-2' }}</span>
+          </td>
+          <td>
+            <span class="badge" [ngClass]="pago.estado === 'Pagado' ? 'bg-success' : 'bg-warning text-dark'">
+              {{ pago.estado }}
+            </span>
+          </td>
+          <td>
+            @if (pago.facturaId) {
+            <span class="badge bg-info">
+              <i class="bi bi-check-circle me-1"></i> Factura Generada
+            </span>
+            } @else {
+            <span class="badge bg-secondary">No Generada</span>
+            }
+          </td>
+          <td>
+            <div class="d-flex gap-1">
+              @if (!pago.facturaId && pago.idReserva) {
+              <button class="btn btn-sm btn-outline-hotel" (click)="abrirModalFactura(pago)" title="Generar Factura">
+                <i class="bi bi-file-earmark-text"></i>
+              </button>
+              }
+
+              @if (pago.pdfUrl) {
+              <button class="btn btn-sm btn-success" (click)="verPdf(pago)" title="Ver PDF">
+                <i class="bi bi-file-pdf"></i>
+              </button>
+              }
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+</div>
+
+<!-- Modal Generar Factura -->
+@if (showFacturaModal) {
+<div class="modal-backdrop fade show"></div>
+<div class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="bi bi-file-earmark-text me-1"></i> Generar Factura
+        </h5>
+        <button type="button" class="btn-close" (click)="cerrarModalFactura()"></button>
+      </div>
+      <div class="modal-body">
+        @if (facturaError) {
+        <div class="alert alert-danger small">{{ facturaError }}</div>
+        }
+        @if (facturaSuccess) {
+        <div class="alert alert-success small">{{ facturaSuccess }}</div>
+        }
+
+        <p class="text-muted small mb-3">
+          Ingresa los datos para la factura o usa tus datos registrados:
+        </p>
+
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-control" [(ngModel)]="facturaNombre">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Apellido</label>
+          <input type="text" class="form-control" [(ngModel)]="facturaApellido">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Correo <span class="text-danger">*</span></label>
+          <input type="email" class="form-control" [(ngModel)]="facturaCorreo" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Documento <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" [(ngModel)]="facturaDocumento" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModalFactura()">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-hotel" [disabled]="facturaLoading" (click)="generarFactura()">
+          @if (facturaLoading) {
+          <span class="spinner-border spinner-border-sm me-1"></span>
+          Generando...
+          } @else {
+          <i class="bi bi-file-earmark-plus me-1"></i> Generar Factura
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}

@@ -1,0 +1,202 @@
+<section class="buscador-section py-4">
+  <div class="container">
+    <form [formGroup]="filterForm" (ngSubmit)="aplicarFiltros()" class="buscador-form bg-white rounded shadow p-3">
+      <!-- Fila 1: Tipo, Fechas, Capacidad -->
+      <div class="row g-3 mb-3">
+        <div class="col-md-4">
+          <label class="form-label small text-muted">Tipo de Habitación</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="bi bi-building"></i></span>
+            <select class="form-select" formControlName="tipoHabitacion">
+              <option value="">Todos los tipos</option>
+              @for (tipo of tiposHabitacion; track tipo.IdTipoHabitacion || $index) {
+              <option [value]="tipo.NombreHabitacion">{{ tipo.NombreHabitacion }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label small text-muted">Fechas</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="bi bi-calendar-event"></i></span>
+            <input type="text" id="filtro-fechas" class="form-control" placeholder="Entrada — Salida" readonly>
+            <!-- Hidden inputs para el formulario reactivo -->
+            <input type="hidden" formControlName="fechaInicio">
+            <input type="hidden" formControlName="fechaFin">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label small text-muted">Capacidad</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white"><i class="bi bi-people-fill"></i></span>
+            <input type="number" class="form-control" formControlName="capacidad" min="1" max="99"
+              placeholder="Personas" (keydown)="$event.key === 'e' || $event.key === 'E' || $event.key === '+' || $event.key === '-' || $event.key === '.' ? $event.preventDefault() : null">
+          </div>
+        </div>
+      </div>
+
+      <!-- Fila 2: Precios y Botón -->
+      <div class="row g-3 align-items-end">
+        <div class="col-md-3">
+          <label class="form-label small text-muted">Precio Mínimo</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white">$</span>
+            <input type="number" class="form-control" formControlName="precioMin" min="0" placeholder="Mínimo" (keydown)="$event.key === 'e' || $event.key === 'E' || $event.key === '+' || $event.key === '-' ? $event.preventDefault() : null">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label small text-muted">Precio Máximo</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white">$</span>
+            <input type="number" class="form-control" formControlName="precioMax" min="0" placeholder="Máximo" (keydown)="$event.key === 'e' || $event.key === 'E' || $event.key === '+' || $event.key === '-' ? $event.preventDefault() : null">
+          </div>
+        </div>
+        <div class="col-md-6 d-flex gap-2 justify-content-end">
+          <button type="button" class="btn btn-outline-secondary" (click)="limpiarFiltros()">
+            <i class="bi bi-x-circle me-1"></i>Limpiar
+          </button>
+          <button type="submit" class="btn btn-primary px-4">
+            <i class="bi bi-search me-1"></i>Buscar Habitaciones
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<section class="container py-4">
+  <h3 class="fw-bold mb-4 text-hotel">
+    <i class="bi bi-building-fill me-2"></i>Habitaciones Disponibles
+    <span class="badge bg-secondary ms-2">{{ habitacionesFiltradas.length }}</span>
+  </h3>
+
+  <!-- Loading -->
+  @if (loading) {
+  <app-loading message="Cargando habitaciones..." [fullscreen]="true"></app-loading>
+  }
+
+  <!-- Error -->
+  @if (error) {
+  <app-error title="Error al cargar" message="No se pudieron cargar las habitaciones. Verifica tu conexión."
+    (onRetry)="loadData()">
+  </app-error>
+  }
+
+  <!-- Empty -->
+  @if (!loading && !error && habitacionesFiltradas.length === 0) {
+  <app-empty icon="bi-building" title="No hay habitaciones"
+    message="No se encontraron habitaciones con los filtros seleccionados.">
+  </app-empty>
+  }
+
+  <!-- Lista de habitaciones -->
+  @if (!loading && !error && habitacionesFiltradas.length > 0) {
+  <div id="resultados">
+    @for (habitacion of habitacionesPaginadas; track habitacion.id || $index) {
+    <div class="card mb-4 shadow-sm resultado-card">
+      <div class="row g-0">
+        <!-- Imagen -->
+        <div class="col-md-4">
+          <img [src]="habitacion.imagen" class="img-fluid rounded-start h-100"
+            style="object-fit: cover; min-height: 200px;" [alt]="habitacion.nombre"
+            (error)="habitacion.imagen = 'https://imageness3realdecuenca.s3.us-east-2.amazonaws.com/Imagen4.png'">
+        </div>
+
+        <!-- Contenido -->
+        <div class="col-md-8 p-4">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h4 class="fw-bold mb-1">{{ habitacion.nombre }}</h4>
+              <p class="text-muted mb-1">
+                <i class="bi bi-building me-1"></i> {{ habitacion.hotel }}
+              </p>
+              <p class="text-muted mb-2">
+                <i class="bi bi-geo-alt me-1"></i> {{ habitacion.ubicacion }}
+              </p>
+              <p class="mb-1">
+                <strong>Tipo:</strong> {{ habitacion.tipoNombre || '—' }}
+              </p>
+              <p class="mb-2">
+                <strong>Capacidad:</strong> {{ habitacion.capacidad || '—' }} personas
+              </p>
+            </div>
+            <div class="text-end">
+              <span class="text-muted small d-block">Precio por noche</span>
+              <span class="fw-bold fs-4 text-primary">${{ habitacion.precio | number:'1.0-2' }}</span>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- Amenidades -->
+          <div class="mb-2">
+            @if (habitacion.amenidades && habitacion.amenidades.length > 0) {
+            @for (amenidad of habitacion.amenidades.slice(0, 4); track amenidad || $index) {
+            <span class="badge bg-primary px-3 py-2 me-1 mb-1">{{ amenidad }}</span>
+            }
+            @if (habitacion.amenidades.length > 4) {
+            <span class="badge bg-secondary px-3 py-2">+{{ habitacion.amenidades.length - 4 }}</span>
+            }
+            } @else {
+            <span class="text-muted small">Sin amenidades</span>
+            }
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <a (click)="verDetalle(habitacion.id)" class="btn btn-primary px-4 fw-semibold" style="cursor: pointer;">
+              <i class="bi bi-eye me-2"></i>Ver detalles
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- Paginación responsive -->
+  @if (totalPages > 1) {
+  <nav class="mt-4">
+    <ul class="pagination justify-content-center flex-wrap">
+      <!-- Anterior -->
+      <li class="page-item" [class.disabled]="page === 1">
+        <button class="page-link" (click)="cambiarPagina(1)" title="Primera">
+          <i class="bi bi-chevron-double-left"></i>
+        </button>
+      </li>
+      <li class="page-item" [class.disabled]="page === 1">
+        <button class="page-link" (click)="cambiarPagina(page - 1)" title="Anterior">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+      </li>
+
+      <!-- Páginas (mostrar solo rango cercano) -->
+      @for (p of getPaginationRange(); track p) {
+      <li class="page-item" [class.active]="page === p">
+        <button class="page-link" (click)="cambiarPagina(p)">{{ p }}</button>
+      </li>
+      }
+
+      <!-- Siguiente -->
+      <li class="page-item" [class.disabled]="page === totalPages">
+        <button class="page-link" (click)="cambiarPagina(page + 1)" title="Siguiente">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </li>
+      <li class="page-item" [class.disabled]="page === totalPages">
+        <button class="page-link" (click)="cambiarPagina(totalPages)" title="Última">
+          <i class="bi bi-chevron-double-right"></i>
+        </button>
+      </li>
+    </ul>
+    <div class="text-center text-muted small mt-2">
+      Página {{ page }} de {{ totalPages }}
+    </div>
+  </nav>
+  }
+
+  <!-- Info resultados -->
+  <div class="text-muted text-center mt-3">
+    Mostrando {{ habitacionesPaginadas.length }} de {{ habitacionesFiltradas.length }} habitaciones
+  </div>
+  }
+</section>

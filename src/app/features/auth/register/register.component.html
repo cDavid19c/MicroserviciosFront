@@ -1,0 +1,194 @@
+<section class="register-wrapper">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-7 col-lg-5">
+        <div class="card shadow-lg border-0 rounded-4">
+          <div class="card-body p-4 p-md-5">
+
+            <!-- Header -->
+            <div class="text-center mb-4">
+              <i class="bi bi-person-plus fs-1 text-hotel"></i>
+              <h3 class="fw-bold text-hotel">Registrar Usuario</h3>
+              <p class="text-muted mb-1">Únete a <strong>Aureacuen</strong></p>
+              <p class="small text-muted mb-0">Cuenca, Ecuador</p>
+            </div>
+
+            <!-- Messages -->
+            @if (errorMessage) {
+            <div class="alert alert-danger text-center p-2">
+              {{ errorMessage }}
+            </div>
+            }
+
+            @if (successMessage) {
+            <div class="alert alert-success text-center p-2">
+              {{ successMessage }}
+            </div>
+            }
+
+            <!-- Form -->
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+              <!-- Nombre -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Nombre</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="bi bi-person"></i>
+                  </span>
+                  <input type="text" class="form-control" formControlName="nombre"
+                    (input)="onNameInput($event, 'nombre')" (blur)="onNameBlur('nombre')"
+                    [class.is-invalid]="f['nombre'].touched && f['nombre'].invalid">
+                </div>
+                @if (f['nombre'].touched && f['nombre'].errors) {
+                <div class="invalid-feedback d-block">
+                  @if (f['nombre'].errors['required']) {
+                  El nombre es obligatorio.
+                  } @else if (f['nombre'].errors['pattern']) {
+                  Solo se permiten letras y espacios.
+                  }
+                </div>
+                }
+              </div>
+
+              <!-- Apellido -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Apellido</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="bi bi-person"></i>
+                  </span>
+                  <input type="text" class="form-control" formControlName="apellido"
+                    (input)="onNameInput($event, 'apellido')" (blur)="onNameBlur('apellido')"
+                    [class.is-invalid]="f['apellido'].touched && f['apellido'].invalid">
+                </div>
+                @if (f['apellido'].touched && f['apellido'].errors) {
+                <div class="invalid-feedback d-block">
+                  @if (f['apellido'].errors['required']) {
+                  El apellido es obligatorio.
+                  } @else if (f['apellido'].errors['pattern']) {
+                  Solo se permiten letras y espacios.
+                  }
+                </div>
+                }
+              </div>
+
+              <!-- Correo -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Correo electrónico</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+                  <input type="email" class="form-control" formControlName="correo" (input)="onEmailInput($event)"
+                    [class.is-invalid]="f['correo'].touched && f['correo'].invalid">
+                </div>
+                @if (f['correo'].touched && f['correo'].errors) {
+                <div class="invalid-feedback d-block">
+                  @if (f['correo'].errors['required']) {
+                  El correo es obligatorio.
+                  } @else if (f['correo'].errors['email']) {
+                  Ingresa un correo válido (ejemplo: usuario&#64;dominio.com).
+                  }
+                </div>
+                }
+              </div>
+
+              <!-- Tipo Documento -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Tipo de documento</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="bi bi-card-text"></i>
+                  </span>
+                  <select class="form-select" formControlName="tipoDocumento"
+                    [class.is-invalid]="f['tipoDocumento'].touched && f['tipoDocumento'].invalid">
+                    <option value="">Seleccione...</option>
+                    <option value="CEDULA">Cédula</option>
+                    <option value="PASAPORTE">Pasaporte</option>
+                    <option value="OTRO">Otro</option>
+                  </select>
+                </div>
+                @if (f['tipoDocumento'].touched && f['tipoDocumento'].errors) {
+                <div class="invalid-feedback d-block">
+                  Debe seleccionar un tipo de documento.
+                </div>
+                }
+              </div>
+
+              <!-- Documento -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Número de documento (10 dígitos)</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="bi bi-hash"></i>
+                  </span>
+                  <input type="text" class="form-control" formControlName="documento" inputmode="numeric" maxlength="10"
+                    (input)="onDocumentoInput($event)"
+                    [class.is-invalid]="f['documento'].touched && f['documento'].invalid">
+                </div>
+                @if (f['documento'].touched && f['documento'].errors) {
+                <div class="invalid-feedback d-block">
+                  @if (f['documento'].errors['required']) {
+                  El documento es obligatorio.
+                  } @else if (f['documento'].errors['pattern']) {
+                  El documento debe tener exactamente 10 números.
+                  }
+                </div>
+                }
+              </div>
+
+              <!-- Contraseña -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Contraseña</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-white">
+                    <i class="bi bi-lock"></i>
+                  </span>
+                  <input [type]="showPassword ? 'text' : 'password'" class="form-control" formControlName="clave"
+                    (keypress)="onPasswordKeyPress($event)" (input)="onPasswordInput($event)"
+                    [class.is-invalid]="f['clave'].touched && f['clave'].invalid">
+                  <button class="btn btn-outline-secondary" type="button" (click)="togglePassword()">
+                    <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                  </button>
+                </div>
+                @if (f['clave'].touched && f['clave'].errors) {
+                <div class="invalid-feedback d-block">
+                  @if (f['clave'].errors['required']) {
+                  La contraseña es obligatoria.
+                  } @else if (f['clave'].errors['minlength']) {
+                  La contraseña debe tener al menos 6 caracteres.
+                  } @else if (f['clave'].errors['noWhitespace']) {
+                  La contraseña no puede contener espacios.
+                  }
+                </div>
+                }
+              </div>
+
+              <!-- Submit -->
+              <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-hotel fw-semibold py-2" [disabled]="loading">
+                  @if (loading) {
+                  <span class="spinner-border spinner-border-sm me-1"></span>
+                  Creando cuenta...
+                  } @else {
+                  Crear cuenta
+                  }
+                </button>
+              </div>
+
+              <!-- Login Link -->
+              <div class="text-center mt-3">
+                <span class="text-muted small">¿Ya tienes una cuenta?</span><br>
+                <a routerLink="/login" class="text-hotel fw-semibold small text-decoration-none">
+                  Iniciar sesión
+                </a>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

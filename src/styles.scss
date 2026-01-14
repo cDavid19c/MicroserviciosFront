@@ -1,0 +1,616 @@
+/* ============================================================
+   🌴 ESTILOS GLOBALES - BRISAMAR CARIBBEAN PREMIUM
+   Hotel Boutique en San Juan, Puerto Rico
+   ============================================================ */
+
+/* Bootstrap imports */
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+/* ==================== VARIABLES CSS - BRISAMAR CARIBBEAN ==================== */
+:root {
+  /* Primary - Ocean Blues */
+  --ocean-deep: #0E4D64;
+  --ocean-dark: #0A3545;
+  --turquoise: #4FBDBA;
+  --turquoise-light: #7DD3D1;
+  --turquoise-dark: #3A9997;
+  
+  /* Neutral Tones */
+  --sand-light: #F3ECDC;
+  --sand-dark: #E5DCCB;
+  --white-warm: #FAFAF8;
+  
+  /* Accent Colors */
+  --coral-soft: #E07A5F;
+  --coral-dark: #C9684F;
+  --palm-green: #4F6F52;
+  --gold-caribbean: #D4A853;
+  
+  /* Gradients */
+  --gradient-ocean: linear-gradient(135deg, #0E4D64 0%, #4FBDBA 100%);
+  --gradient-sunset: linear-gradient(135deg, #E07A5F 0%, #D4A853 100%);
+  --gradient-deep: linear-gradient(135deg, #0A3545 0%, #0E4D64 100%);
+  --gradient-turquoise: linear-gradient(135deg, #4FBDBA 0%, #7DD3D1 100%);
+
+  /* Typography */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-headings: 'Playfair Display', Georgia, serif;
+  
+  /* Backgrounds */
+  --bg-primary: #FAFAF8;
+  --bg-secondary: #F3ECDC;
+  --bg-tertiary: #E8F4F3;
+
+  /* Grays */
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+
+  /* Legacy compatibility */
+  --color-hotel: #0E4D64;
+  --color-hotel-dark: #0A3545;
+  --color-hotel-light: #4FBDBA;
+  --color-hotel-lighter: #7DD3D1;
+  --color-hotel-accent: #E07A5F;
+
+  /* Bootstrap Override */
+  --bs-primary: #0E4D64 !important;
+  --bs-primary-rgb: 14, 77, 100 !important;
+  --bs-success: #4F6F52 !important;
+  --bs-info: #4FBDBA !important;
+}
+
+/* ==================== GLOBAL STYLES ==================== */
+body {
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--gray-800);
+  background-color: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headings);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ocean-dark);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(79, 189, 186, 0.25);
+  color: var(--ocean-dark);
+}
+
+/* Focus visible para accesibilidad */
+:focus-visible {
+  outline: 2px solid var(--turquoise);
+  outline-offset: 2px;
+}
+
+/* ==================== ANIMATIONS ==================== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInBlur {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes waveUnderline {
+  0%, 100% { background-position: 0% 100%; }
+  50% { background-position: 100% 100%; }
+}
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* ==================== UTILITY CLASSES ==================== */
+.text-hotel {
+  color: var(--ocean-deep);
+}
+
+.text-hotel-light {
+  color: var(--turquoise);
+}
+
+.text-coral {
+  color: var(--coral-soft);
+}
+
+.bg-hotel {
+  background-color: var(--ocean-deep);
+}
+
+.bg-hotel-gradient {
+  background: var(--gradient-ocean);
+}
+
+.bg-sand {
+  background-color: var(--sand-light);
+}
+
+/* ==================== BUTTONS ==================== */
+.btn-hotel {
+  background: var(--gradient-ocean);
+  border: none;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(14, 77, 100, 0.35);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover, &:focus {
+    background: var(--gradient-deep);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(14, 77, 100, 0.45);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: var(--ocean-deep);
+    opacity: 0.65;
+  }
+}
+
+.btn-outline-hotel {
+  border: 2px solid var(--ocean-deep);
+  color: var(--ocean-deep);
+  background: transparent;
+  font-weight: 600;
+  transition: all 0.3s ease;
+
+  &:hover, &:focus {
+    background-color: var(--ocean-deep);
+    border-color: var(--ocean-deep);
+    color: white;
+    transform: translateY(-2px);
+  }
+}
+
+.btn-coral {
+  background: var(--gradient-sunset);
+  border: none;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(224, 122, 95, 0.35);
+
+  &:hover, &:focus {
+    background: linear-gradient(135deg, var(--coral-dark) 0%, var(--coral-soft) 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(224, 122, 95, 0.45);
+  }
+}
+
+/* Bootstrap primary override */
+.btn-primary {
+  background-color: var(--ocean-deep) !important;
+  border-color: var(--ocean-deep) !important;
+  
+  &:hover, &:focus, &:active {
+    background-color: var(--ocean-dark) !important;
+    border-color: var(--ocean-dark) !important;
+  }
+}
+
+.btn-outline-primary {
+  border-color: var(--ocean-deep) !important;
+  color: var(--ocean-deep) !important;
+  
+  &:hover, &:focus {
+    background-color: var(--ocean-deep) !important;
+    color: white !important;
+  }
+}
+
+.btn-success {
+  background-color: var(--palm-green) !important;
+  border-color: var(--palm-green) !important;
+}
+
+/* ==================== FORM CONTROLS ==================== */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--turquoise);
+  box-shadow: 0 0 0 0.25rem rgba(79, 189, 186, 0.25);
+}
+
+.form-check-input:checked {
+  background-color: var(--ocean-deep);
+  border-color: var(--ocean-deep);
+}
+
+/* ==================== CARDS ==================== */
+.card {
+  border: none;
+  border-radius: 1rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: white;
+}
+
+.card:hover {
+  box-shadow: 0 20px 50px rgba(14, 77, 100, 0.15);
+  transform: translateY(-5px);
+}
+
+/* ==================== CUSTOM SCROLLBAR ==================== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sand-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--turquoise) 0%, var(--ocean-deep) 100%);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ocean-dark);
+}
+
+/* ==================== LOADING SPINNER ==================== */
+.spinner-border {
+  color: var(--turquoise);
+}
+
+.spinner-border.text-primary {
+  color: var(--ocean-deep) !important;
+}
+
+/* ==================== ALERTS ==================== */
+.alert {
+  border-radius: 0.75rem;
+  border: none;
+}
+
+.alert-primary {
+  background-color: rgba(79, 189, 186, 0.15);
+  border-left: 4px solid var(--turquoise);
+  color: var(--ocean-dark);
+}
+
+.alert-success {
+  background-color: rgba(79, 111, 82, 0.12);
+  border-left: 4px solid var(--palm-green);
+  color: var(--palm-green);
+}
+
+.alert-warning {
+  background-color: rgba(212, 168, 83, 0.15);
+  border-left: 4px solid var(--gold-caribbean);
+  color: #8B6914;
+}
+
+.alert-danger {
+  background-color: rgba(224, 122, 95, 0.12);
+  border-left: 4px solid var(--coral-soft);
+  color: var(--coral-dark);
+}
+
+/* ==================== TABLES ==================== */
+.table {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.table thead {
+  background: var(--gradient-ocean);
+  color: white;
+}
+
+.table thead th {
+  border: none;
+  font-weight: 600;
+  padding: 1rem;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(243, 236, 220, 0.5);
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(79, 189, 186, 0.1);
+}
+
+/* ==================== BADGES ==================== */
+.badge.bg-primary,
+.badge.bg-success {
+  background-color: var(--ocean-deep) !important;
+}
+
+.badge.text-primary {
+  color: var(--ocean-deep) !important;
+}
+
+.badge.bg-info {
+  background-color: var(--turquoise) !important;
+  color: var(--ocean-dark) !important;
+}
+
+/* ==================== PAGINATION ==================== */
+.page-link {
+  color: var(--ocean-deep);
+  border-color: var(--sand-dark);
+}
+
+.page-item.active .page-link {
+  background-color: var(--ocean-deep);
+  border-color: var(--ocean-deep);
+}
+
+.page-link:hover {
+  color: var(--ocean-dark);
+  background-color: var(--sand-light);
+}
+
+/* ==================== DROPDOWN ==================== */
+.dropdown-menu {
+  border: none;
+  box-shadow: 0 15px 50px rgba(14, 77, 100, 0.15);
+  border-radius: 12px;
+  animation: fadeInUp 0.25s ease-out;
+  padding: 0.5rem;
+}
+
+.dropdown-item {
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: var(--ocean-deep);
+}
+
+.dropdown-item:hover {
+  background: rgba(79, 189, 186, 0.12);
+  color: var(--ocean-deep);
+  transform: translateX(4px);
+}
+
+/* ==================== LINKS ==================== */
+a {
+  color: var(--ocean-deep);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: var(--turquoise);
+}
+
+.text-primary {
+  color: var(--ocean-deep) !important;
+}
+
+/* Wave underline effect */
+.link-wave {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--turquoise), var(--coral-soft), var(--turquoise));
+    background-size: 200% 100%;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+    animation: waveUnderline 2s ease-in-out infinite;
+  }
+}
+
+/* ==================== NAV TABS ==================== */
+.nav-tabs .nav-link.active {
+  color: var(--ocean-deep);
+  border-bottom: 3px solid var(--turquoise);
+  font-weight: 600;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--turquoise);
+}
+
+/* ==================== PROGRESS BARS ==================== */
+.progress-bar {
+  background: var(--gradient-ocean);
+}
+
+/* ==================== ACCORDION ==================== */
+.accordion-button:not(.collapsed) {
+  background-color: rgba(79, 189, 186, 0.12);
+  color: var(--ocean-deep);
+}
+
+.accordion-button:focus {
+  box-shadow: 0 0 0 0.25rem rgba(79, 189, 186, 0.25);
+}
+
+/* ==================== LIST GROUP ==================== */
+.list-group-item.active {
+  background-color: var(--ocean-deep);
+  border-color: var(--ocean-deep);
+}
+
+/* ==================== BREADCRUMB ==================== */
+.breadcrumb-item.active {
+  color: var(--ocean-deep);
+}
+
+.breadcrumb-item a {
+  color: var(--turquoise);
+}
+
+/* ==================== MODALS ==================== */
+.modal-header.bg-primary {
+  background: var(--gradient-ocean) !important;
+}
+
+.modal-content {
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 25px 80px rgba(14, 77, 100, 0.25);
+}
+
+/* ==================== GLASSMORPHISM UTILITIES ==================== */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(10, 53, 69, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(79, 189, 186, 0.2);
+}
+
+/* ==================== ADMIN PANEL STYLES ==================== */
+.admin-sidebar {
+  background: var(--gradient-deep);
+  
+  .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    margin: 4px 8px;
+    transition: all 0.3s ease;
+    
+    &:hover, &.active {
+      background: rgba(79, 189, 186, 0.2);
+      color: white;
+    }
+    
+    i {
+      width: 24px;
+    }
+  }
+}
+
+.admin-card {
+  border-radius: 1rem;
+  border: 1px solid rgba(14, 77, 100, 0.08);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 10px 30px rgba(14, 77, 100, 0.1);
+  }
+}
+
+.admin-stat-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border-left: 4px solid var(--turquoise);
+  
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--gradient-ocean);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+}

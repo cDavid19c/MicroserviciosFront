@@ -1,0 +1,112 @@
+// Caribbean color variables
+$ocean-deep: #0E4D64;
+$ocean-dark: #0A3545;
+$turquoise: #4FBDBA;
+$coral-soft: #E07A5F;
+$sand-light: #F3ECDC;
+$gold-caribbean: #D4A853;
+
+.text-hotel {
+  color: $ocean-deep;
+}
+
+.btn-hotel {
+  background: linear-gradient(135deg, $ocean-deep 0%, $turquoise 100%);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 15px rgba(14, 77, 100, 0.35);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, $ocean-dark 0%, $ocean-deep 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(14, 77, 100, 0.45);
+
+    &::before {
+      left: 100%;
+    }
+  }
+}
+
+.btn-outline-hotel {
+  border: 2px solid $ocean-deep;
+  color: $ocean-deep;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: $ocean-deep;
+    color: white;
+    transform: translateY(-2px);
+  }
+}
+
+.reserva-card {
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(14, 77, 100, 0.1);
+  background: white;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(14, 77, 100, 0.18) !important;
+  }
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  i {
+    font-size: 1.25rem;
+    color: $turquoise;
+  }
+}
+
+.rounded-start {
+  border-top-left-radius: 1rem !important;
+  border-bottom-left-radius: 1rem !important;
+}
+
+.badge.bg-success {
+  background: linear-gradient(135deg, $ocean-deep 0%, $turquoise 100%) !important;
+}
+
+.badge.bg-warning {
+  background: linear-gradient(135deg, $coral-soft 0%, $gold-caribbean 100%) !important;
+  color: white !important;
+}
+
+.badge.bg-info {
+  background: $turquoise !important;
+  color: $ocean-dark !important;
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+
+  .reserva-card:hover,
+  .btn-hotel:hover,
+  .btn-outline-hotel:hover {
+    transform: none;
+  }
+
+  .btn-hotel::before {
+    display: none;
+  }
+}

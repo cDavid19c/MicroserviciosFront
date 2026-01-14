@@ -1,0 +1,144 @@
+// Caribbean color variables
+$ocean-deep: #0E4D64;
+$ocean-dark: #0A3545;
+$turquoise: #4FBDBA;
+$coral-soft: #E07A5F;
+$sand-light: #F3ECDC;
+$gold-caribbean: #D4A853;
+
+.text-hotel {
+  color: $ocean-deep;
+}
+
+.btn-hotel {
+  background: linear-gradient(135deg, $ocean-deep 0%, $turquoise 100%);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 15px rgba(14, 77, 100, 0.35);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, $ocean-dark 0%, $ocean-deep 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(14, 77, 100, 0.45);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
+.btn-outline-hotel {
+  border: 2px solid $ocean-deep;
+  color: $ocean-deep;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: $ocean-deep;
+    color: white;
+    transform: translateY(-2px);
+  }
+}
+
+.table {
+  border-radius: 0.75rem;
+  overflow: hidden;
+
+  th {
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: white;
+    background: linear-gradient(135deg, $ocean-deep 0%, $turquoise 100%);
+  }
+
+  td {
+    vertical-align: middle;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(79, 189, 186, 0.08);
+    }
+  }
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(243, 236, 220, 0.4);
+}
+
+.card {
+  border: 1px solid rgba(14, 77, 100, 0.1);
+  box-shadow: 0 4px 20px rgba(14, 77, 100, 0.1);
+  border-radius: 1rem;
+}
+
+.modal-backdrop {
+  z-index: 1050;
+}
+
+.modal {
+  z-index: 1055;
+}
+
+.badge.bg-success {
+  background: linear-gradient(135deg, $ocean-deep 0%, $turquoise 100%) !important;
+}
+
+.badge.bg-warning {
+  background: linear-gradient(135deg, $coral-soft 0%, $gold-caribbean 100%) !important;
+  color: white !important;
+}
+
+.page-link {
+  color: $ocean-deep;
+  border-color: $sand-light;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(135deg, $ocean-deep 0%, $turquoise 100%);
+    border-color: $ocean-deep;
+    color: white;
+    transform: translateY(-2px);
+  }
+}
+
+.page-item.active .page-link {
+  background: linear-gradient(135deg, $ocean-deep 0%, $turquoise 100%);
+  border-color: $ocean-deep;
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+
+  .btn-hotel:hover,
+  .btn-outline-hotel:hover,
+  .page-link:hover {
+    transform: none;
+  }
+
+  .btn-hotel::before {
+    display: none;
+  }
+}
