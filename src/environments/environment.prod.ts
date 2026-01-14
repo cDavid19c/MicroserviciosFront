@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
 
+  apiGatewayUrl: 'https://brismarapigateway.onrender.com/api',
   // URLs directas a los microservicios en Render
   catalogosServiceUrl: 'https://brisamarcatalogosservice.onrender.com/api',
   habitacionesServiceUrl: 'https://brisamarhabitacionesservice.onrender.com',
